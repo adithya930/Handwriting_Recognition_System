@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera - Medical Prescription Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" />
+                    <path d="M12 8v8M8 12h8" />
+                </svg>
+            </div>
+            <h2>MedScript AI</h2>
+            <p>Prescription Recognition</p>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="user-avatar">👤</div>
+            <div class="user-details">
+                <p class="user-name" id="userName">Loading...</p>
+                <p class="user-role" id="userRole">User</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/home" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/camera" class="nav-link active">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Camera
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/upload" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Upload
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/history" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    History
+                </a>
+            </li>
+        </ul>
+
+        <!-- Logout Button -->
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="logout-btn">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Camera Capture</h1>
+            <p>Capture prescription images directly from your camera</p>
+        </div>
+
+        <div class="card">
+            <div class="camera-container">
+                <video id="cameraView" autoplay playsinline></video>
+                <canvas id="captureCanvas" style="display: none;"></canvas>
+
+                <div class="camera-controls">
+                    <button id="startCameraBtn" class="btn btn-primary">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Start Camera
+                    </button>
+                    <button id="captureBtn" class="btn btn-success" style="display: none;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        </svg>
+                        Capture Photo
+                    </button>
+                    <button id="stopCameraBtn" class="btn btn-danger" style="display: none;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                        </svg>
+                        Stop Camera
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Captured Image Preview -->
+        <div id="capturedSection" class="card" style="display: none;">
+            <h2>Captured Image</h2>
+            <div class="image-preview">
+                <img id="capturedImage" src="" alt="Captured">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="recognizeBtn" class="btn btn-primary">
+                    <span class="btn-text">Recognize Text</span>
+                    <span class="btn-loader" style="display: none;">
+                        <span class="spinner"></span> Processing...
+                    </span>
+                </button>
+                <button id="retakeBtn" class="btn btn-secondary">Retake Photo</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="results-section" style="display: none;">
+            <div class="card">
+                <h2>Recognition Results</h2>
+                <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                    <div class="stat-card" style="flex: 1;">
+                        <div class="stat-content">
+                            <p>Confidence</p>
+                            <h3 id="confidenceValue">-</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="flex: 1;">
+                        <div class="stat-content">
+                            <p>Processing Time</p>
+                            <h3 id="processingTime">-</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-text" id="recognizedText"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+    <script>
+        // Load user info on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('userName').textContent = user.full_name || user.username;
+                document.getElementById('userRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+            }
+        });
+    </script>
+</body>
+
+</html>

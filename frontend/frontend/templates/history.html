@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - Medical Prescription Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" />
+                    <path d="M12 8v8M8 12h8" />
+                </svg>
+            </div>
+            <h2>MedScript AI</h2>
+            <p>Prescription Recognition</p>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="user-avatar">👤</div>
+            <div class="user-details">
+                <p class="user-name" id="userName">Loading...</p>
+                <p class="user-role" id="userRole">User</p>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/home" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/camera" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Camera
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/upload" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Upload
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/history" class="nav-link active">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    History
+                </a>
+            </li>
+        </ul>
+
+        <!-- Logout Button -->
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="logout-btn">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Scan History</h1>
+            <p>View all your previous prescription scans and recognition results</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="card">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+                <input type="text" id="searchInput" placeholder="Search by filename or text..."
+                    style="flex: 1; min-width: 250px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                <button class="btn btn-secondary" onclick="loadHistory()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Search
+                </button>
+                <button class="btn btn-secondary" onclick="loadHistory()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="card">
+            <h2>All Scans (<span id="totalRecords">0</span>)</h2>
+            <div style="overflow-x: auto;">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date & Time</th>
+                            <th>File Name</th>
+                            <th>Text Preview</th>
+                            <th>Confidence</th>
+                            <th>Characters</th>
+                            <th>Method</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 60px; color: #94a3b8;">
+                                <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    style="margin: 0 auto 16px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <p style="font-size: 16px;">Loading history...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination"
+                style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="prevPage()" id="prevBtn">Previous</button>
+                <span id="pageInfo" style="color: #64748b;">Page 1 of 1</span>
+                <button class="btn btn-secondary" onclick="nextPage()" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <!-- Detail Modal -->
+        <div id="detailModal" class="modal" style="display: none;">
+            <div class="modal-content card"
+                style="max-width: 800px; margin: 50px auto; max-height: 80vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Scan Details</h2>
+                    <button id="closeModal" class="btn btn-secondary">Close</button>
+                </div>
+                <div id="modalContent">
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <img id="modalImage" src="" alt="Scanned Image"
+                                style="max-width: 100%; border-radius: 8px; display: none;">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <p><strong>Filename:</strong> <span id="modalFilename">-</span></p>
+                            <p><strong>Date:</strong> <span id="modalDate">-</span></p>
+                            <p><strong>Confidence:</strong> <span id="modalConfidence">-</span></p>
+                            <p><strong>Method:</strong> <span id="modalMethod">-</span></p>
+                            <div style="margin-top: 16px;">
+                                <strong>Recognized Text:</strong>
+                                <pre id="modalText"
+                                    style="background: #f5f5f5; padding: 12px; border-radius: 6px; white-space: pre-wrap; max-height: 200px; overflow-y: auto;">-</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+    <script>
+        // Load user info on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('userName').textContent = user.full_name || user.username;
+                document.getElementById('userRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+            }
+        });
+    </script>
+</body>
+
+</html>
