@@ -1,0 +1,30 @@
+# Core Dependencies
+Flask==3.0.0
+flask-cors==4.0.0
+Werkzeug==3.0.1
+requests>=2.31.0
+
+# Authentication
+PyJWT>=2.8.0
+bcrypt>=4.1.2
+
+# Database
+mysql-connector-python==8.2.0
+
+# OCR for Text Extraction
+pytesseract>=0.3.10
+
+# Image Processing (for basic file handling)
+Pillow>=10.2.0
+
+# Utilities
+python-dotenv==1.0.0
+
+# Development Tools (optional)
+pytest==7.4.3
+black==23.12.1
+flake8==6.1.0
+
+# Production Server (optional)
+gunicorn==21.2.0
+waitress==2.1.2
