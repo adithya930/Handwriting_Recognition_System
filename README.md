@@ -374,3 +374,5 @@ This project is for educational purposes.
 - IAM Handwriting Database: https://fki.tic.heia-fr.ch/databases/iam-handwriting-database
 - TensorFlow Documentation: https://www.tensorflow.org/
 - OpenCV Tutorials: https://docs.opencv.org/
+
+![image alt](https://github.com/adithya930/Handwriting_Recognition_System/blob/ef0d1a1081033c5319a6c951b694489c0592a39d/welcome%20page.png)
