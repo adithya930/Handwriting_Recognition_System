@@ -376,3 +376,4 @@ This project is for educational purposes.
 - OpenCV Tutorials: https://docs.opencv.org/
 
 ![image alt](https://github.com/adithya930/Handwriting_Recognition_System/blob/ef0d1a1081033c5319a6c951b694489c0592a39d/welcome%20page.png)
+![image alt](https://github.com/adithya930/Handwriting_Recognition_System/blob/0972f0c3c237337c5eed682d2b4d1e8ed321bca6/Screenshot%20(152).png)
